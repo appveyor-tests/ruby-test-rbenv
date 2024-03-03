@@ -5,6 +5,7 @@ init:
  - sh: echo $APPVEYOR_BUILD_WORKER_CLOUD
 
 test_script:
+- sh: export PATH="$PATH:${HOME}/.rbenv/shims"
 - sh: echo $PATH
 - sh: rbenv versions
 - sh: |
