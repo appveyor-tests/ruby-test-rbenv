@@ -1,0 +1,19 @@
+init:
+ - appveyor version
+ - ps: Update-AppveyorBuild -Message "Image '$env:APPVEYOR_BUILD_WORKER_IMAGE'@'$env:APPVEYOR_BUILD_WORKER_CLOUD' cloud. $env:APPVEYOR_REPO_COMMIT_MESSAGE"
+ - sh: echo $APPVEYOR_BUILD_WORKER_IMAGE
+ - sh: echo $APPVEYOR_BUILD_WORKER_CLOUD
+
+test_script:
+
+- rbenv versions
+- sh: |
+    [[ -s "$HOME/.rbenv/bin/rbenv" ]]
+    declare RUBY_VERSIONS=( "2.1.10" "2.2.10" "2.3.8" "2.4.10" "2.5.9" "2.6.10" "2.7.8" "3.0.6" "3.1.4" "3.2.3"  )
+    for v in "${RUBY_VERSIONS[@]}"; do
+        rbenv local ${v} &&
+        ruby --version ||
+            { echo "[ERROR] Cannot use ${v}." 1>&2; exit 1;}
+    done
+
+build: off
